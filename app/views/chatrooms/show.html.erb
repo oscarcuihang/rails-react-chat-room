@@ -1,9 +1,14 @@
-<p id="notice"><%= notice %></p>
-
 <p>
   <strong>Name:</strong>
   <%= @chatroom.name %>
 </p>
 
-<%= link_to 'Edit', edit_chatroom_path(@chatroom) %> |
-<%= link_to 'Back', chatrooms_path %>
+<div data-behavior='message'>
+  <% 1.upto(1000) do %>
+    <div><strong>Osacr: </strong> MSG</div>
+  <% end %>
+</div>
+
+<%= form_for [@chatroom, Message.new] do |f| %>
+  <%= f.text_area :content, rows: 2, class: 'form-control', autofocus: true %>
+<% end %>
