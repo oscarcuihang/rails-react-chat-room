@@ -10,6 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 const propTypes = {
   message: PropTypes.object.isRequired,
+  currentUser: PropTypes.object.isRequired,
 };
 
 const defaultProps = {};
@@ -23,7 +24,7 @@ class Message extends React.Component {
   }
 
   renderMessage() {
-    if (this.props.message.sender_ind) {
+    if (this.props.message.user.id === this.props.currentUser.id) {
       return this.renderSender();
     } else {
       return this.renderReciever();

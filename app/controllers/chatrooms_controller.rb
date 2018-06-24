@@ -4,7 +4,16 @@ class ChatroomsController < ApplicationController
   # GET /chatrooms
   # GET /chatrooms.json
   def index
-    @chatrooms = current_user.chatrooms
+    @data = {}
+    chatrooms =
+      if current_user.nil?
+        nil
+      else
+        current_user.chatrooms << Chatroom.first unless current_user.chatrooms.include?(Chatroom.first)
+        current_user.chatrooms
+      end
+    @data['chatrooms'] = chatrooms
+    @data['currentUser'] = current_user
   end
 
   # GET /chatrooms/1
@@ -18,6 +27,7 @@ class ChatroomsController < ApplicationController
     end
     @data['messages'] = msgs
     @data['chatroom'] = @chatroom
+    @data['currentUser'] = current_user
   end
 
   # GET /chatrooms/new
@@ -32,17 +42,10 @@ class ChatroomsController < ApplicationController
   # POST /chatrooms
   # POST /chatrooms.json
   def create
-    @chatroom = Chatroom.new(chatroom_params)
-
-    respond_to do |format|
-      if @chatroom.save
-        format.html { redirect_to @chatroom, notice: 'Chatroom was successfully created.' }
-        format.json { render :show, status: :created, location: @chatroom }
-      else
-        format.html { render :new }
-        format.json { render json: @chatroom.errors, status: :unprocessable_entity }
-      end
-    end
+    @chatroom = Chatroom.new(name: chatroom_params)
+    @chatroom.users << User.find(user_params[:id])
+    @chatroom.save
+    render json: { status: 'success', data: @chatroom }, status: 200
   end
 
   # PATCH/PUT /chatrooms/1
@@ -77,6 +80,10 @@ class ChatroomsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def chatroom_params
-      params.require(:chatroom).permit(:name)
+      params.require(:chatroomName)
+    end
+
+    def user_params
+      params.require(:currentUser).permit(:id)
     end
 end

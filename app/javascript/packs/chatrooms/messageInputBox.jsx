@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
-import { sendMessage, setCallback } from "../client/chat";
+import { sendMessage } from "../client/messages";
 
 const propTypes = {
   chatroom: PropTypes.object.isRequired,
@@ -20,7 +20,6 @@ class MessageInputBox extends React.Component {
 
   handleEnterKeyOnPress(ev) {
     if (ev.key === 'Enter') {
-      console.log(`Pressed keyCode ${ev.key}`);
       ev.preventDefault();
       this.handleSendMessage();
     }
@@ -34,7 +33,6 @@ class MessageInputBox extends React.Component {
     const chatroomId = this.props.chatroom.id;
     const CSRF_TOKEN = document.querySelector('meta[name=csrf-token]').content;
     const url = `/chatrooms/${chatroomId}/messages`;
-    console.log(url);
     const requestBody = {
       message_content: inputMessage,
       chatroom_id: chatroomId

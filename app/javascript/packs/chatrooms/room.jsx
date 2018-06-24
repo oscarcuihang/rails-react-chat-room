@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import Message from './message';
 import MessageInputBox from './messageInputBox';
-import { sendMessage, setCallback } from "../client/chat";
+import { setCallback } from "../client/messages";
 
 const propTypes = {
   messages: PropTypes.array,
   chatroom: PropTypes.object.isRequired,
+  currentUser: PropTypes.object.isRequired,
 };
 
 const defaultProps = {messages: []};
@@ -19,9 +20,18 @@ class Room extends React.Component {
       messages: this.props.messages,
     };
     this.renderMessagesList = this.renderMessagesList.bind(this);
+    this.setMessageAreaBottom = this.setMessageAreaBottom.bind(this);
   }
 
   componentDidMount() {
+    this.setMessageAreaBottom();
+  }
+
+  componentDidUpdate() {
+    this.setMessageAreaBottom();
+  }
+
+  setMessageAreaBottom() {
     const element = document.getElementById("messages-area");
     element.scrollTop = element.scrollHeight;
   }
@@ -33,7 +43,7 @@ class Room extends React.Component {
       this.setState({ messages: messages })
     });
     const messagesList = Object.keys(this.state.messages).map(id => (
-      <Message key={`message${id}`} message={this.state.messages[id]} />
+      <Message key={`message${id}`} message={this.state.messages[id]} currentUser={this.props.currentUser} />
     ));
     return messagesList;
   }
@@ -57,8 +67,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const data = JSON.parse(node.getAttribute('data'));
   const messages = data.messages;
   const chatroom = data.chatroom;
+  const currentUser = data.currentUser;
   ReactDOM.render(
-    <Room messages={messages} chatroom={chatroom} />,
+    <Room
+      messages={messages}
+      chatroom={chatroom}
+      currentUser={currentUser}
+    />,
     document.getElementById('react-container').appendChild(document.createElement('div')),
   );
 });

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   end
 
   devise_for :users
+  # devise_for :users, :controllers => {:registrations => "registrations"}
   # mount ActionCable.server, at: ‘/cable’
 
 end
