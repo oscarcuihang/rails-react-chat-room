@@ -23,7 +23,7 @@ class Chatroom extends React.Component {
       <ul>
         {this.props.chatrooms.map(chatroom => (
           <li key={chatroom.id}>
-            <Button href={`chatrooms/${chatroom.id}`}>
+            <Button href={`/chatrooms/${chatroom.id}`}>
               {chatroom.name}
             </Button>
           </li>

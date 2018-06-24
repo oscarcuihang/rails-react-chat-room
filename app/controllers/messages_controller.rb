@@ -4,15 +4,16 @@ class MessagesController < ApplicationController
   before_action :set_chatroom
 
   def create
-    message = @chatroom.messages.new(msg_params)
+    # binding.pry
+    message = @chatroom.messages.new(content: msg_params)
     message.user = current_user
     message.save!
-
-    respond_to do |format|
-      format.html { redirect_to @chatroom }
-      format.json { render json: 'wtf' }
-      format.js { render 'chatrooms/show', format: :js }
-    end
+    redirect_to @chatroom
+    # respond_to do |format|
+    #   format.html { redirect_to @chatroom }
+    #   format.json { render json: 'wtf' }
+    #   format.js { render 'chatrooms/show', format: :js }
+    # end
 
     # MessageRelayJob.perform_later(message)
   end
@@ -24,6 +25,6 @@ class MessagesController < ApplicationController
   end
 
   def msg_params
-    params.require(:message).permit(:content)
+    params.require(:message_content)
   end
 end

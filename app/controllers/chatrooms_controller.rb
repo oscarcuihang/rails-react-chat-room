@@ -10,7 +10,14 @@ class ChatroomsController < ApplicationController
   # GET /chatrooms/1
   # GET /chatrooms/1.json
   def show
-    @chatroom_messages = @chatroom.messages.order(created_at: :desc).limit(100).reverse
+    messages = @chatroom.messages.order(created_at: :desc).limit(100).reverse
+    @data = {}
+    msgs = []
+    messages.each do |msg|
+      msgs << {message: msg, user: msg.user, sender_ind: msg.user == current_user}
+    end
+    @data['messages'] = msgs
+    @data['chatroom'] = @chatroom
   end
 
   # GET /chatrooms/new

@@ -1,0 +1,23 @@
+
+#react-data{data: @data.to_json}
+#react-container
+- content_for :javascript do
+  = javascript_pack_tag 'chatrooms/room'
+  = stylesheet_pack_tag 'chatrooms/message.css'
+  / = stylesheet_pack_tag 'chatrooms/room.css'
+
+
+/ <p>
+/   <strong>Name:</strong>
+/   <%= @chatroom.name %>
+/ </p>
+
+/ <div data-behavior='messages'>
+/   <% @chatroom_messages.each do |message| %>
+/     <%= render message %>
+/   <% end %>
+/ </div>
+
+/ <%= form_for [@chatroom, Message.new], remote: true, authenticity_token: true do |f| %>
+/   <%= f.text_area :content, rows: 2, class: 'form-control', autofocus: true %>
+/ <% end %>
