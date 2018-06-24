@@ -4,18 +4,13 @@ class MessagesController < ApplicationController
   before_action :set_chatroom
 
   def create
-    # binding.pry
     message = @chatroom.messages.new(content: msg_params)
     message.user = current_user
-    message.save!
-    redirect_to @chatroom
-    # respond_to do |format|
-    #   format.html { redirect_to @chatroom }
-    #   format.json { render json: 'wtf' }
-    #   format.js { render 'chatrooms/show', format: :js }
-    # end
-
-    # MessageRelayJob.perform_later(message)
+    if message.save!
+      render json: { status: 'success'}, status:200
+    else
+      render json: { status: 'noooooo failed'}, status:400
+    end
   end
 
   private

@@ -1,19 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import List from '@material-ui/core/List';
 import Message from './message';
-import fetch from 'isomorphic-fetch';
+import MessageInputBox from './messageInputBox';
+import { sendMessage, setCallback } from "../client/chat";
 
 const propTypes = {
   messages: PropTypes.array,
-  chatroom: PropTypes.object,
+  chatroom: PropTypes.object.isRequired,
 };
 
-const defaultProps = {};
+const defaultProps = {messages: []};
 
 class Room extends React.Component {
   constructor(props) {
@@ -22,7 +19,6 @@ class Room extends React.Component {
       messages: this.props.messages,
     };
     this.renderMessagesList = this.renderMessagesList.bind(this);
-    this.handleEnterKeyOnPress = this.handleEnterKeyOnPress.bind(this);
   }
 
   componentDidMount() {
@@ -31,46 +27,15 @@ class Room extends React.Component {
   }
 
   renderMessagesList() {
+    setCallback(message => {
+      let messages = this.state.messages;
+      messages.push(message)
+      this.setState({ messages: messages })
+    });
     const messagesList = Object.keys(this.state.messages).map(id => (
       <Message key={`message${id}`} message={this.state.messages[id]} />
     ));
     return messagesList;
-  }
-
-  handleEnterKeyOnPress() {
-    const inputMessage = document.getElementById('new_message').value;
-    console.log(inputMessage);
-    document.getElementById('new_message').value = null;
-
-    const chatroomId = this.props.chatroom.id;
-    const CSRF_TOKEN = document.querySelector('meta[name=csrf-token]').content;
-    const url = `/chatrooms/${chatroomId}/messages`;
-    console.log(url);
-    const requestBody = {
-      message_content: inputMessage,
-      chatroom_id: chatroomId
-    };
-
-    fetch(url, {
-      method: 'POST',
-      credentials: 'same-origin',
-      body: JSON.stringify(requestBody),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'X-Transaction': 'POST claimed',
-        'X-CSRF-Token': CSRF_TOKEN,
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          this.setState({ submitStatus: 'success' });
-        } else {
-          this.setState({ submitStatus: 'fail' });
-        }
-      });
-
-    return null;
   }
 
   render() {
@@ -78,23 +43,7 @@ class Room extends React.Component {
       <div>
         <h2>{this.props.chatroom.name}</h2>
         <div id='messages-area' className='messages-area'>{ this.renderMessagesList() }</div>
-        <TextField
-          id="new_message"
-          label="New Message"
-          multiline
-          rows="4"
-          placeholder="Input New Message"
-          margin="normal"
-          fullWidth={true}
-          autoFocus={true}
-            onKeyPress={(ev) => {
-            if (ev.key === 'Enter') {
-              console.log(`Pressed keyCode ${ev.key}`);
-              ev.preventDefault();
-              this.handleEnterKeyOnPress();
-            }
-          }}
-        />
+        <MessageInputBox chatroom={this.props.chatroom} />
       </div>
     );
   }
@@ -103,7 +52,6 @@ class Room extends React.Component {
 Room.propTypes = propTypes;
 Room.defaultProps = defaultProps;
 export default Room;
-
 document.addEventListener('DOMContentLoaded', () => {
   const node = document.getElementById('react-data');
   const data = JSON.parse(node.getAttribute('data'));
