@@ -5,9 +5,7 @@
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'hello_react' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>\
   </head>
 
   <body>
@@ -41,11 +39,10 @@
         </div>
       </div>
     </nav>
-    
 
-    <div class="fluid-container" style="margin-top: 70px">
+    <div id ="body-container" class="fluid-container" style="margin-top: 70px">
       <div class="row">
-        <div class="col-sm-2" style="position: fixed; top: 70px; left: 0">
+        <divclass="col-sm-2" style="position: fixed; top: 70px; left: 0">
           <% if user_signed_in? %>
             <h5>Chatrooms</h5>
             <ul>
@@ -57,6 +54,7 @@
         </div>
         <div class="col-sm-10 col-sm-offset-2">
           <%= yield %>
+          <%= yield :javascript %>
         </div>
       </div>
     </div>

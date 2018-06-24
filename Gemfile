@@ -1,3 +1,4 @@
+
 source 'https://rubygems.org'
 
 git_source(:github) do |repo_name|
@@ -55,6 +56,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'devise'
 gem 'bootstrap-sass'
 gem 'jquery-rails'
+gem 'haml'
+gem 'haml-rails'
 
 gem 'webpacker'
 

@@ -5,9 +5,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import { Button } from 'react-bootstrap';
 
 const Hello = props => (
-  <div>Hello 1 {props.name}!</div>
+  <div>
+    Hello 1 {props.name}! asd
+    <Button bsStyle="primary">Primary</Button>
+  </div>
 )
 
 Hello.defaultProps = {
@@ -21,6 +25,7 @@ Hello.propTypes = {
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
     <Hello name="React" />,
-    document.body.appendChild(document.createElement('div')),
+    document.getElementById('react-container').appendChild(document.createElement('div')),
+    // document.body.appendChild(document.createElement('div')),
   )
 })

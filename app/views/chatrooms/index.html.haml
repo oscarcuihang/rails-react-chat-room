@@ -1,0 +1,4 @@
+#react-data{data: @chatrooms.to_json}
+#react-container
+- content_for :javascript do
+  = javascript_pack_tag 'chatrooms/index'
