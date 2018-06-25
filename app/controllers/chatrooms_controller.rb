@@ -12,8 +12,10 @@ class ChatroomsController < ApplicationController
         current_user.chatrooms << Chatroom.first unless current_user.chatrooms.include?(Chatroom.first)
         current_user.chatrooms
       end
-    @data['chatrooms'] = chatrooms
+    @data['chatrooms'] = chatrooms.reject{ |room| room.name.nil? }
+    @data['allChatrooms'] = Chatroom.all.reject{ |room| room.name.nil? || room.users.include?(current_user) }
     @data['currentUser'] = current_user
+    @data['users'] = User.all.reject{ |user| user == current_user }
   end
 
   # GET /chatrooms/1
@@ -24,11 +26,13 @@ class ChatroomsController < ApplicationController
     msgs = []
     if  !current_user_view_permission
       @data['messages'] = msgs
+      @data['chatUsers'] = []
     else
       messages.each do |msg|
         msgs << {message: msg, user: msg.user}
       end
       @data['messages'] = msgs
+      @data['chatUsers'] = @chatroom.users.reject{ |user| user == current_user }
     end
       @data['viewPermission'] = current_user_view_permission
       @data['chatroom'] = @chatroom
@@ -58,6 +62,7 @@ class ChatroomsController < ApplicationController
   end
 
   def join
+    # binding.pry
     chatroom = Chatroom.find_by(name: chatroom_params)
     return render json: { status: 'fail', message: 'data does not exist' }, status: 404 unless chatroom
     user = User.find(user_params[:id])
@@ -73,6 +78,22 @@ class ChatroomsController < ApplicationController
     return render  json: { status: 'fail', message: 'data does not exist' }, status: 442 unless chatroom.users.include?(user)
     ChatroomUser.where(user: user, chatroom: chatroom).destroy_all
     render json: { status: 'success', data: 'left chatroom' }, status: 200
+  end
+
+  def personal
+    sender = User.find(user_params[:id])
+    reciever = User.find(user_params[:id])
+    chatrooms = Chatroom.where(name: nil).reject{|room| room.users.count != 2}
+    chatrooms = chatrooms.reject{ |room| !room.users.include?(sender) || !room.users.include?(reciever) }
+    if chatrooms.present?
+      return render json: { status: 'success', data: chatrooms.first }, status: 200
+    end
+    chatroom = Chatroom.new()
+    chatroom.users << sender
+    chatroom.users << reciever
+    chatroom.save!
+    return render json: { status: 'success', data: chatrooms }, status: 200
+
   end
 
   # PATCH/PUT /chatrooms/1
@@ -114,9 +135,12 @@ class ChatroomsController < ApplicationController
       params.require(:chatroomId)
     end
 
-
     def user_params
       params.require(:currentUser).permit(:id)
+    end
+
+    def reciever_params
+      params.require(:reciever).permit(:id)
     end
 
     def current_user_view_permission

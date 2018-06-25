@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :chatrooms do
     patch 'join', on: :collection
     delete 'leave', on: :collection
+    patch 'personal', on: :collection
     resource :chatroom_users
     resources :messages
   end

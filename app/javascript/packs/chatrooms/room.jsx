@@ -22,6 +22,7 @@ class Room extends React.Component {
     };
     this.renderMessagesList = this.renderMessagesList.bind(this);
     this.setMessageAreaBottom = this.setMessageAreaBottom.bind(this);
+    this.renderChatroomHeader = this.renderChatroomHeader.bind(this);
   }
 
   componentDidMount() {
@@ -52,10 +53,17 @@ class Room extends React.Component {
     return messagesList;
   }
 
+  renderChatroomHeader() {
+    if (this.props.chatroom.name) {
+      return `Chat room: ${this.props.chatroom.name}`;
+    }
+    return `Chat with: ${this.props.chatUsers[0].name}`;
+  }
+
   render() {
     return (
       <div>
-        <h2>{this.props.chatroom.name}</h2>
+        <h2>{this.renderChatroomHeader()}</h2>
         <div id='messages-area' className='messages-area'>{ this.renderMessagesList() }</div>
         <MessageInputBox chatroom={this.props.chatroom} />
       </div>
@@ -73,12 +81,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const chatroom = data.chatroom;
   const currentUser = data.currentUser;
   const viewPermission = data.viewPermission;
+  const chatUsers = data.chatUsers;
   ReactDOM.render(
     <Room
       messages={messages}
       chatroom={chatroom}
       currentUser={currentUser}
       viewPermission={viewPermission}
+      chatUsers={chatUsers}
     />,
     document.getElementById('react-container').appendChild(document.createElement('div')),
   );

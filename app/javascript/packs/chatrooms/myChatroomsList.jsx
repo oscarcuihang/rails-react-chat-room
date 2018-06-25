@@ -17,7 +17,7 @@ const defaultProps = {
   chatrooms: []
 };
 
-class ChatroomsList extends React.Component {
+class MyChatroomsList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,7 +25,7 @@ class ChatroomsList extends React.Component {
     };
 
     this.handleCreateNewChatroom = this.handleCreateNewChatroom.bind(this);
-    this.handleJoinChatroom = this.handleJoinChatroom.bind(this);
+    this.handleLeaveChatroom = this.handleLeaveChatroom.bind(this);
   }
 
   handleCreateNewChatroom(newChatroom) {
@@ -34,18 +34,18 @@ class ChatroomsList extends React.Component {
     this.setState({ chatrooms: chatrooms })
   }
 
-  handleJoinChatroom(chatroom) {
+  handleLeaveChatroom(chatroom) {
     event.preventDefault();
     const CSRF_TOKEN = document.querySelector('meta[name=csrf-token]').content;
-    const url = `/chatrooms/join`;
+    const url = `/chatrooms/leave`;
 
     const requestBody = {
       currentUser: this.props.currentUser,
-      chatroomName: chatroom.name
+      chatroomId: chatroom.id
     };
 
     fetch(url, {
-      method: 'PATCH',
+      method: 'DELETE',
       credentials: 'same-origin',
       body: JSON.stringify(requestBody),
       headers: {
@@ -69,14 +69,23 @@ class ChatroomsList extends React.Component {
   render() {
     return (
       <div>
-        <h2>Chatrooms</h2>
+        <CreateChatroomForm
+          currentUser={this.props.currentUser}
+          handleOnCreate={this.handleCreateNewChatroom}
+        />
+        <JoinChatroomForm
+          currentUser={this.props.currentUser}
+          handleOnCreate={this.handleCreateNewChatroom}
+        />
+        <h2>My Chatrooms</h2>
         {this.props.chatrooms.map(chatroom => (
           <ListItem key={chatroom.id}>
             <Button variant="outlined" href={`/chatrooms/${chatroom.id}`}>
               {chatroom.name}
             </Button>
-            <Button variant="outlined" onClick={() => { this.handleJoinChatroom(chatroom) }} >
-              Join
+
+            <Button variant="outlined" onClick={() => { this.handleLeaveChatroom(chatroom) }}>
+              Leave
             </Button>
           </ListItem>
           ))}
@@ -85,6 +94,6 @@ class ChatroomsList extends React.Component {
   }
 }
 
-ChatroomsList.propTypes = propTypes;
-ChatroomsList.defaultProps = defaultProps;
-export default ChatroomsList;
+MyChatroomsList.propTypes = propTypes;
+MyChatroomsList.defaultProps = defaultProps;
+export default MyChatroomsList;
