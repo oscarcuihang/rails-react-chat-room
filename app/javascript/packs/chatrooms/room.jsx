@@ -9,6 +9,7 @@ const propTypes = {
   messages: PropTypes.array,
   chatroom: PropTypes.object.isRequired,
   currentUser: PropTypes.object.isRequired,
+  viewPermission: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {messages: []};
@@ -37,6 +38,9 @@ class Room extends React.Component {
   }
 
   renderMessagesList() {
+    if (!this.props.viewPermission) {
+      return(<div>You don't have permission for this chatroom, please join the room first</div>);
+    }
     setCallback(message => {
       let messages = this.state.messages;
       messages.push(message)
@@ -68,11 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const messages = data.messages;
   const chatroom = data.chatroom;
   const currentUser = data.currentUser;
+  const viewPermission = data.viewPermission;
   ReactDOM.render(
     <Room
       messages={messages}
       chatroom={chatroom}
       currentUser={currentUser}
+      viewPermission={viewPermission}
     />,
     document.getElementById('react-container').appendChild(document.createElement('div')),
   );

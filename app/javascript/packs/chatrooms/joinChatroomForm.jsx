@@ -11,7 +11,7 @@ const propTypes = {
 };
 
 const defaultProps = {};
-class CreateChatroomForm extends React.Component {
+class JoinChatroomForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +30,7 @@ class CreateChatroomForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const CSRF_TOKEN = document.querySelector('meta[name=csrf-token]').content;
-    const url = `/chatrooms`;
+    const url = `/chatrooms/join`;
 
     const requestBody = {
       currentUser: this.props.currentUser,
@@ -38,7 +38,7 @@ class CreateChatroomForm extends React.Component {
     };
 
     fetch(url, {
-      method: 'POST',
+      method: 'PATCH',
       credentials: 'same-origin',
       body: JSON.stringify(requestBody),
       headers: {
@@ -79,7 +79,7 @@ class CreateChatroomForm extends React.Component {
             value={this.state.value}
             onChange={this.handleChange}
           />
-          <Button type="submit" variant="contained" color="primary" > Create New Chatroom </Button>
+          <Button type="submit" variant="contained" color="primary" > Join a Chatroom </Button>
         </form>
         <p>{this.renderFecthMessage()}</p>
       </div>
@@ -87,6 +87,6 @@ class CreateChatroomForm extends React.Component {
   }
 }
 
-CreateChatroomForm.propTypes = propTypes;
-CreateChatroomForm.defaultProps = defaultProps;
-export default CreateChatroomForm;
+JoinChatroomForm.propTypes = propTypes;
+JoinChatroomForm.defaultProps = defaultProps;
+export default JoinChatroomForm;

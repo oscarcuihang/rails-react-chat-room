@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import ChatroomsList from './chatroomsList';
+import Grid from '@material-ui/core/Grid';
 
 const propTypes = {
   chatrooms: PropTypes.array,
@@ -34,9 +35,10 @@ class Chatroom extends React.Component {
 
   render() {
     return (
-      <div>
-        { this.renderIndex() }
-      </div>
+      <Grid container spacing={24}>
+        <Grid item xs={4}> { this.renderIndex() } </Grid>
+        <Grid item xs={8}> MSG HERE </Grid>
+      </Grid>
     );
   }
 }

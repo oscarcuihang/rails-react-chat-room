@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import CreateChatroomForm from './createChatroomForm'
+import JoinChatroomForm from './joinChatroomForm'
+
 import { sendMessage, setCallback } from "../client/chatrooms";
 
 const propTypes = {
@@ -34,6 +36,10 @@ class ChatroomsList extends React.Component {
     return (
       <div>
         <CreateChatroomForm
+          currentUser={this.props.currentUser}
+          handleOnCreate={this.handleCreateNewChatroom}
+        />
+        <JoinChatroomForm
           currentUser={this.props.currentUser}
           handleOnCreate={this.handleCreateNewChatroom}
         />
