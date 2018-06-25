@@ -66,6 +66,15 @@ class ChatroomsController < ApplicationController
     render json: { status: 'success', data: chatroom }, status: 200
   end
 
+
+  def leave
+    chatroom = Chatroom.find(chatroom_id_params)
+    user = User.find(user_params[:id])
+    return render  json: { status: 'fail', message: 'data does not exist' }, status: 442 unless chatroom.users.include?(user)
+    ChatroomUser.where(user: user, chatroom: chatroom).destroy_all
+    render json: { status: 'success', data: 'left chatroom' }, status: 200
+  end
+
   # PATCH/PUT /chatrooms/1
   # PATCH/PUT /chatrooms/1.json
   def update
@@ -100,6 +109,11 @@ class ChatroomsController < ApplicationController
     def chatroom_params
       params.require(:chatroomName)
     end
+
+    def chatroom_id_params
+      params.require(:chatroomId)
+    end
+
 
     def user_params
       params.require(:currentUser).permit(:id)
