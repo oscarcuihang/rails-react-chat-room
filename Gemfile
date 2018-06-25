@@ -40,9 +40,9 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
-gem 'pry-rails'
-
- gem 'pry-byebug'
+  gem 'pry-rails'
+  gem 'faker'
+  gem 'pry-byebug'
 end
 
 group :development do
@@ -63,6 +63,3 @@ gem 'haml'
 gem 'haml-rails'
 
 gem 'webpacker'
-
-
-

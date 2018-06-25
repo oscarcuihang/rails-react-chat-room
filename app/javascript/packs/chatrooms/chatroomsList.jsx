@@ -70,16 +70,18 @@ class ChatroomsList extends React.Component {
     return (
       <div>
         <h2>Chatrooms</h2>
-        {this.props.chatrooms.map(chatroom => (
-          <ListItem key={chatroom.id}>
-            <Button variant="outlined" href={`/chatrooms/${chatroom.id}`}>
-              {chatroom.name}
-            </Button>
-            <Button variant="outlined" onClick={() => { this.handleJoinChatroom(chatroom) }} >
-              Join
-            </Button>
-          </ListItem>
-          ))}
+        <div className='gird-area'>
+          {this.props.chatrooms.map(chatroom => (
+            <ListItem key={chatroom.id}>
+              <Button variant="outlined" href={`/chatrooms/${chatroom.id}`}>
+                {chatroom.name}
+              </Button>
+              <Button variant="outlined" onClick={() => { this.handleJoinChatroom(chatroom) }} >
+                Join
+              </Button>
+            </ListItem>
+            ))}
+        </div>
       </div>
     );
   }

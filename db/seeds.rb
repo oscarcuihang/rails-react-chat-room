@@ -6,4 +6,17 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Chatroom.create(name: 'General')
+unless Rails.env.production?
+  Chatroom.create(name: 'General')
+
+  10.times { User.create(name: Faker::Name.name, email: Faker::Internet.email, password: Faker::Internet.password(8)) }
+
+  5.times do
+    chatroom = Chatroom.create(name: Faker::Company.name)
+    rand(50..100).times do
+      message = chatroom.messages.new(content: Faker::Lorem.paragraph)
+      message.user = User.find(rand(1..10))
+      message.save
+    end
+  end 
+end

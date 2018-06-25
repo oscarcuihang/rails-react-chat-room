@@ -82,9 +82,10 @@ class ChatroomsController < ApplicationController
 
   def personal
     sender = User.find(user_params[:id])
-    reciever = User.find(user_params[:id])
+    reciever = User.find(reciever_params[:id])
     chatrooms = Chatroom.where(name: nil).reject{|room| room.users.count != 2}
     chatrooms = chatrooms.reject{ |room| !room.users.include?(sender) || !room.users.include?(reciever) }
+    
     if chatrooms.present?
       return render json: { status: 'success', data: chatrooms.first }, status: 200
     end
@@ -92,7 +93,7 @@ class ChatroomsController < ApplicationController
     chatroom.users << sender
     chatroom.users << reciever
     chatroom.save!
-    return render json: { status: 'success', data: chatrooms }, status: 200
+    return render json: { status: 'success', data: chatroom }, status: 200
 
   end
 
