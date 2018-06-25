@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import CreateChatroomForm from './createChatroomForm'
+import JoinChatroomForm from './joinChatroomForm'
+import ListItem from '@material-ui/core/ListItem';
+
 import { sendMessage, setCallback } from "../client/chatrooms";
 
 const propTypes = {
@@ -22,12 +25,45 @@ class ChatroomsList extends React.Component {
     };
 
     this.handleCreateNewChatroom = this.handleCreateNewChatroom.bind(this);
+    this.handleLeaveChatroom = this.handleLeaveChatroom.bind(this);
   }
 
   handleCreateNewChatroom(newChatroom) {
     let chatrooms = this.state.chatrooms;
     chatrooms.push(newChatroom);
     this.setState({ chatrooms: chatrooms })
+  }
+
+  handleLeaveChatroom(chatroom) {
+    event.preventDefault();
+    const CSRF_TOKEN = document.querySelector('meta[name=csrf-token]').content;
+    const url = `/chatrooms/leave`;
+
+    const requestBody = {
+      currentUser: this.props.currentUser,
+      chatroomId: chatroom.id
+    };
+
+    fetch(url, {
+      method: 'DELETE',
+      credentials: 'same-origin',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'X-Transaction': 'POST claimed',
+        'X-CSRF-Token': CSRF_TOKEN,
+      },
+    })
+    .then((response) => {
+        if (response.status>= 400) {
+          this.setState({ submitStatus: 'fail' });
+          throw new Error('Bad response from server');
+        }
+        return response.json();
+    })
+    .then((json) => { location.reload() })
+    return null;
   }
 
   render() {
@@ -37,16 +73,22 @@ class ChatroomsList extends React.Component {
           currentUser={this.props.currentUser}
           handleOnCreate={this.handleCreateNewChatroom}
         />
+        <JoinChatroomForm
+          currentUser={this.props.currentUser}
+          handleOnCreate={this.handleCreateNewChatroom}
+        />
         <h2>My Chatrooms</h2>
-        <ul>
-          {this.props.chatrooms.map(chatroom => (
-            <li key={chatroom.id}>
-              <Button href={`/chatrooms/${chatroom.id}`}>
-                {chatroom.name}
-              </Button>
-            </li>
+        {this.props.chatrooms.map(chatroom => (
+          <ListItem key={chatroom.id}>
+            <Button href={`/chatrooms/${chatroom.id}`}>
+              {chatroom.name}
+            </Button>
+
+            <Button onClick={() => { this.handleLeaveChatroom(chatroom) }}>
+              Leave
+            </Button>
+          </ListItem>
           ))}
-        </ul>
       </div>
     );
   }

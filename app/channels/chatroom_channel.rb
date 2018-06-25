@@ -8,6 +8,7 @@ class ChatroomChannel < ApplicationCable::Channel
   def send_message(payload)
     data = payload['message']
     chatroom = Chatroom.find(data['chatroom_id'])
+    return unless current_user_view_permission(chatroom)
     message = chatroom.messages.new(content: data['message_content'])
     message.user = current_user
 
@@ -22,5 +23,10 @@ class ChatroomChannel < ApplicationCable::Channel
 
   def unsubscribed
     stop_all_streams
+  end
+  private
+
+  def current_user_view_permission(chatroom)
+    chatroom.users.include?(current_user)
   end
 end

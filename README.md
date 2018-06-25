@@ -33,7 +33,7 @@ $ rake db:drop db:create db:migrate db:seed
 ### Start servers
 Start rails server (Backend)
 * open a new console
-* `$ rails s` 
+* `$ rails s -p 3000` 
 
 Start react server (FrontEnd)
 * open a new console
@@ -42,6 +42,9 @@ Start react server (FrontEnd)
 Start redis server (Websocket)
 * open a new console
 * `$ redis-server` 
+
+Visit in broswer
+* http://localhost:3000 
 
 ## Datamodel
 ### User

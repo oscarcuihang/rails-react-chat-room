@@ -22,12 +22,17 @@ class ChatroomsController < ApplicationController
     messages = @chatroom.messages.order(created_at: :desc).limit(100).reverse
     @data = {}
     msgs = []
-    messages.each do |msg|
-      msgs << {message: msg, user: msg.user, sender_ind: msg.user == current_user}
+    if  !current_user_view_permission
+      @data['messages'] = msgs
+    else
+      messages.each do |msg|
+        msgs << {message: msg, user: msg.user}
+      end
+      @data['messages'] = msgs
     end
-    @data['messages'] = msgs
-    @data['chatroom'] = @chatroom
-    @data['currentUser'] = current_user
+      @data['viewPermission'] = current_user_view_permission
+      @data['chatroom'] = @chatroom
+      @data['currentUser'] = current_user
   end
 
   # GET /chatrooms/new
@@ -50,6 +55,24 @@ class ChatroomsController < ApplicationController
     chatroom.users << user unless chatroom.users.include?(user)
     chatroom.save
     render json: { status: 'success', data: chatroom }, status: 200
+  end
+
+  def join
+    chatroom = Chatroom.find_by(name: chatroom_params)
+    return render json: { status: 'fail', message: 'data does not exist' }, status: 404 unless chatroom
+    user = User.find(user_params[:id])
+    return render  json: { status: 'fail', message: 'data does not exist' }, status: 442 if chatroom.users.include?(user)
+    chatroom.users << user
+    render json: { status: 'success', data: chatroom }, status: 200
+  end
+
+
+  def leave
+    chatroom = Chatroom.find(chatroom_id_params)
+    user = User.find(user_params[:id])
+    return render  json: { status: 'fail', message: 'data does not exist' }, status: 442 unless chatroom.users.include?(user)
+    ChatroomUser.where(user: user, chatroom: chatroom).destroy_all
+    render json: { status: 'success', data: 'left chatroom' }, status: 200
   end
 
   # PATCH/PUT /chatrooms/1
@@ -87,7 +110,16 @@ class ChatroomsController < ApplicationController
       params.require(:chatroomName)
     end
 
+    def chatroom_id_params
+      params.require(:chatroomId)
+    end
+
+
     def user_params
       params.require(:currentUser).permit(:id)
+    end
+
+    def current_user_view_permission
+      @chatroom.users.include?(current_user)
     end
 end

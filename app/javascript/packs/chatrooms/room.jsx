@@ -4,11 +4,13 @@ import PropTypes from 'prop-types';
 import Message from './message';
 import MessageInputBox from './messageInputBox';
 import { setCallback } from "../client/messages";
+import Button from '@material-ui/core/Button';
 
 const propTypes = {
   messages: PropTypes.array,
   chatroom: PropTypes.object.isRequired,
   currentUser: PropTypes.object.isRequired,
+  viewPermission: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {messages: []};
@@ -37,6 +39,9 @@ class Room extends React.Component {
   }
 
   renderMessagesList() {
+    if (!this.props.viewPermission) {
+      return(<div>You don't have permission for this chatroom, please join the room first</div>);
+    }
     setCallback(message => {
       let messages = this.state.messages;
       messages.push(message)
@@ -51,7 +56,10 @@ class Room extends React.Component {
   render() {
     return (
       <div>
-        <h2>{this.props.chatroom.name}</h2>
+        <h2>
+          {this.props.chatroom.name}
+        </h2>
+
         <div id='messages-area' className='messages-area'>{ this.renderMessagesList() }</div>
         <MessageInputBox chatroom={this.props.chatroom} />
       </div>
@@ -68,11 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const messages = data.messages;
   const chatroom = data.chatroom;
   const currentUser = data.currentUser;
+  const viewPermission = data.viewPermission;
   ReactDOM.render(
     <Room
       messages={messages}
       chatroom={chatroom}
       currentUser={currentUser}
+      viewPermission={viewPermission}
     />,
     document.getElementById('react-container').appendChild(document.createElement('div')),
   );

@@ -1,0 +1,29 @@
+!!!5
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title RailsReactChatRoom
+    = csrf_meta_tags
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+  %body
+    %nav.navbar.navbar-default.navbar-fixed-top
+      .container-fluid
+        .navbar-header
+          %button.navbar-toggle.collapsed{"aria-expa" => "", "data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", :type => "button"}
+            %span.sr-only Toggle Navigation
+          = link_to root_path, class: 'navbar-brand' do
+            Chat
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          %ul.nav.navbar-nav
+          %ul.nav.navbar-nav.navbar-right
+            - if user_signed_in?
+              = yield :right_nav
+              %li= link_to 'Setting', edit_user_registration_path
+              %li.divider{:role => "separator"}
+              %li= link_to 'Logout', destroy_user_session_path, method: :delete
+            - else
+              %li= link_to 'Sign Up', new_user_registration_path
+              %li= link_to 'Login', new_user_session_path
+    #body-container.fluid-container{:style => "margin-top: 70px"}
+      = yield
+      = yield :javascript
