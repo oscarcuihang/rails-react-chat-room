@@ -17,10 +17,11 @@ class CreateChatroomForm extends React.Component {
     super(props);
     this.state = {
       value: '',
-      submitStatus: 'fail'
+      submitStatus: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.renderFecthMessage = this.renderFecthMessage.bind(this);
   }
 
   handleChange(event) {
@@ -50,8 +51,8 @@ class CreateChatroomForm extends React.Component {
     })
     .then((response) => {
         if (response.status>= 400) {
-          throw new Error('Bad response from server');
           this.setState({ submitStatus: 'fail' });
+          throw new Error('Bad response from server');
         }
         return response.json();
     })
@@ -59,22 +60,30 @@ class CreateChatroomForm extends React.Component {
     return null;
   }
 
+  renderFecthMessage() {
+    if (this.state.submitStatus === 'fail') {
+      return 'Unable to create chatroom with input name..., please change a new or jion the existing room';
+    }
+    return null;
+  }
+
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <TextField
-          required
-          id="required"
-          label="Chatroom Name"
-          placeholder='Chatroom Name'
-          margin="normal"
-          value={this.state.value}
-          onChange={this.handleChange}
-        />
-        <Button type="submit" variant="contained" color="primary" >
-          Create New Chatroom
-        </Button>
-      </form>
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <TextField
+            required
+            id="required"
+            label="Chatroom Name"
+            placeholder='Chatroom Name'
+            margin="normal"
+            value={this.state.value}
+            onChange={this.handleChange}
+          />
+          <Button type="submit" variant="contained" color="primary" > Create New Chatroom </Button>
+        </form>
+        <p>{this.renderFecthMessage()}</p>
+      </div>
     );
   }
 }

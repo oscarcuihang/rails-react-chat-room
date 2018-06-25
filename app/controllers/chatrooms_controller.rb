@@ -42,10 +42,14 @@ class ChatroomsController < ApplicationController
   # POST /chatrooms
   # POST /chatrooms.json
   def create
-    @chatroom = Chatroom.new(name: chatroom_params)
-    @chatroom.users << User.find(user_params[:id])
-    @chatroom.save
-    render json: { status: 'success', data: @chatroom }, status: 200
+    if Chatroom.find_by(name: chatroom_params)
+      return render json: { status: 'fail', message: 'data exists' }, status: 442
+    end
+    chatroom = Chatroom.new(name: chatroom_params)
+    user = User.find(user_params[:id])
+    chatroom.users << user unless chatroom.users.include?(user)
+    chatroom.save
+    render json: { status: 'success', data: chatroom }, status: 200
   end
 
   # PATCH/PUT /chatrooms/1

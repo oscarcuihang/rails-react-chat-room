@@ -7,6 +7,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemText from '@material-ui/core/ListItemText';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
 
 const propTypes = {
   currentUser: PropTypes.object.isRequired,
@@ -21,8 +25,13 @@ class Message extends React.Component {
 
   render() {
     return (
-      <div>
-      </div>
+      <AppBar position="absolute" className={classes.appBar}>
+        <Toolbar>
+          <Typography variant="title" color="inherit" noWrap>
+            Clipped drawer
+          </Typography>
+        </Toolbar>
+      </AppBar>
     );
   }
 }
