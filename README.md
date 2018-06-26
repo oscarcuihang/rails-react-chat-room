@@ -50,6 +50,45 @@ Start redis server (Websocket)
 Visit in broswer
 * http://localhost:3000 
 
+### File Structure
+```
+.
+|-- app
+|   |-- assets
+|   |   |-- stylesheets
+|   |-- controllers
+|   |-- channels
+|   |-- helpers
+|   |-- views
+|   |-- webpacker
+|-- config
+|-- db
+|-- Gemfile
+|-- Gemfile.lock
+|-- package.json
+|-- lib
+|-- log
+```
+
+##### app/controllers/
+This director contains all ActionController logic
+##### app/channels/
+This director contains all ActionCable logic
+##### app/model/
+This director contains all ActiveModel
+##### app/views/
+This director contains all basic layout structures
+##### app/webpacker/
+This director contains all react components
+##### db
+This director contains all migration files, and `schema.rb`, and `seeds.rb`
+##### config
+This director contains all rails, database, and webpacker configurations
+##### Gemfile
+This file contains all Rails dependencies
+##### package.json
+This file contains all React dependencies
+
 ## Datamodel
 ### User
 * User has a name and en email, a user also has multiple chatrooms and message
