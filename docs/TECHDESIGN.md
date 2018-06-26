@@ -10,7 +10,7 @@ Stack Compare
 | ------------- |:-------------:| -----:|
 | Server | Rails | Flask |
 | Websocket | ActionCable | gevent |
-| Database | ActiveRecord(Any DB)      | pymysql |
+| Database | ActiveRecord(Any DB) | pymysql |
 
 
 #### Backend ([Ruby on Rails](https://rubyonrails.org/))
@@ -77,10 +77,18 @@ Difficulties and Solutions:
 
     ```
 
+#### UI Frameworks
+##### [Material-UI](https://material-ui.com/)
 
-Future Improvements:
+For the mojarity part of this project is using Material-UI as a UI framework. And it's compatible easily with React. But there are some downside of this framework. I'm trying to find a project navigation bar that matchs the rails portion, but unfortunately I have to leave the navbar as the rails layout at this time until I can find a better UI framework that has more elements options.
+
+##### rails-bootstrap
+This this only used on the rails side. The project needs this b/c of the navbar and user system(devise), devise has pre-build front-end in bootstrap. I'll keep as it is until there is a better UI framework,
+
+#### Future Improvements:
 1. Reconstruct folder and files directory
 2. Add foreman to start project with rails, react, and redis
+3. Eliminate bootstrap, and all un-nessary libraries from the server side.
 
 #### Datamodel
 ##### User
