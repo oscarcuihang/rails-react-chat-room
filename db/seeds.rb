@@ -7,9 +7,12 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 unless Rails.env.production?
-  Chatroom.create(name: 'General')
+  general_room = Chatroom.create(name: 'General')
 
-  10.times { User.create(name: Faker::Name.name, email: Faker::Internet.email, password: Faker::Internet.password(8)) }
+  10.times do
+    user = User.create(name: Faker::Name.name, email: Faker::Internet.email, password: Faker::Internet.password(8))
+    general_room.users << user
+  end
 
   5.times do
     chatroom = Chatroom.create(name: Faker::Company.name)

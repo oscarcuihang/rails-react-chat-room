@@ -61,8 +61,30 @@ Visit in broswer
 
 ### Screenshots
 #### chat room
-![chat-room](https://github.com/oscarcuihang/rails-react-chat-room/raw/master/images/chatroom.png "Logo Title Text 1")
+1. User Index Page
+![index](https://github.com/oscarcuihang/rails-react-chat-room/raw/master/images/1.png "index page")
+  1. My Chatroom
+    * `General` Chatroom is added for every user by default, and user is unable to leave General Chatroom
+    * User has option to create a new chatroom, if chat room already exists, no new room will be created
+    * User has option to join a chatroom by typing the room name.
+    * User has all joined chatrooms listed, and has options to open the chatroom by click on the room name or leave a room by click `Leave`
+  2. Chatrooms
+    * List of all existing chatrooms in system
+    * User has option to join the chatroom, user is unable to view any message before join a chatroom
+  3. Users
+    * List of all users in system
+    * User hsa option to open a person to person chat by click on others' name.
 
+2. Chat Room Page
+![chat-room](https://github.com/oscarcuihang/rails-react-chat-room/raw/master/images/2.png "index page")
+* Chatroom will always retrive the last 100 messages for server after page is reload.
+* User's message will be shown on the right, other users' messages will be shown on the left.
+
+3. Person to Person Page
+![p2p-chat](https://github.com/oscarcuihang/rails-react-chat-room/raw/master/images/3.png "index page")
+* Chatroom will always retrive the last 100 messages for server after page is reload.
+* User's message will be shown on the right, other users' messages will be shown on the left.
+* P2P chatroom is unable for a third person
 
 ## How to run the test suite
 Test to be added
