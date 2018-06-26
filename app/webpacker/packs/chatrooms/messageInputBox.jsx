@@ -27,7 +27,6 @@ class MessageInputBox extends React.Component {
 
   handleSendMessage() {
     const inputMessage = document.getElementById('new_message').value;
-    console.log(inputMessage);
     document.getElementById('new_message').value = null;
 
     const chatroomId = this.props.chatroom.id;
