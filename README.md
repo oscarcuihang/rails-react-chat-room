@@ -109,14 +109,15 @@ This file contains all React dependencies
 	1. **My Chatrooms** (Left panel)
     * `General` Chatroom is added for every user by default, and user is unable to leave General Chatroom
     * User has option to create a new chatroom, if chat room already exists, no new room will be created
-    * User has option to join a chatroom by typing the room name.
+    * User has option to join a chatroom by typing the room name
     * User has all joined chatrooms listed, and has options to open the chatroom by click on the room name or leave a room by click `Leave`
-  	2. ** Chatrooms**  (Center panel)
+  	2. **Chatrooms**  (Center panel)
     * List of all existing chatrooms in system
-    * User has option to join the chatroom, user is unable to view any message before join a chatroom
-  	3. ** Users**  (Right panel)
+    * User has option to join the chatroom by click the `Join` button next to the chat room's name button
+    * User is unable to view any message before join a chatroom
+  	3. **Users**  (Right panel)
     * List of all users in system
-    * User hsa option to open a person to person chat by click on others' name.
+    * User hsa option to open a person to person chat by click on others' name
 
 2. Chat Room Page
 ![chat-room](https://github.com/oscarcuihang/rails-react-chat-room/raw/master/images/2.png "index page")
@@ -133,6 +134,9 @@ This file contains all React dependencies
 
 ## How to run the test suite
 Test to be added
+* Unit Test for backend functions
+* Unit Test for react component
+* Linter for both rails and react style
 
 ## Contributing 
 Bug reports and pull requests are welcome on [GitHub](https://github.com/oscarcuihang/rails-react-chat-room). This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
