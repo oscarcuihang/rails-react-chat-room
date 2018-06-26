@@ -6,8 +6,6 @@ import CreateChatroomForm from './createChatroomForm'
 import JoinChatroomForm from './joinChatroomForm'
 import ListItem from '@material-ui/core/ListItem';
 
-import { sendMessage, setCallback } from "../client/chatrooms";
-
 const propTypes = {
   chatrooms: PropTypes.array,
   currentUser: PropTypes.object.isRequired,

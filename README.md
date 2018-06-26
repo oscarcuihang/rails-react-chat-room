@@ -1,7 +1,11 @@
 # Rails React Chatroom
+  * [Project Board](https://github.com/oscarcuihang/rails-react-chat-room/projects/1)
+  * [Technical Design](docs/TECHDESIGN.md)
 
 ## Development
-### [Install Ruby and Rails](http://railsapps.github.io/installrubyonrails-mac.html)
+### [Install Ruby and Rails](https://gorails.com/setup/osx/10.13-high-sierra)
+You can stop after install sqlite3, this project is using sqlite, but you can easily migrate to any database by installing the database and change [database config](/config/database.yml)
+
 * Ruby Verions: `2.5.0`
 * Rails Version: `5.1.6`
 

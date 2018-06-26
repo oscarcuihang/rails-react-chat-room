@@ -1,6 +1,6 @@
 import createChannel from "./cable";
 
-let callback; // declaring a variable that will hold a function later
+let callback;
 
 const chat = createChannel("ChatroomChannel", {
   received({ message }) {

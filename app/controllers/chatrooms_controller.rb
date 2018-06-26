@@ -12,7 +12,7 @@ class ChatroomsController < ApplicationController
         current_user.chatrooms << Chatroom.first unless current_user.chatrooms.include?(Chatroom.first)
         current_user.chatrooms
       end
-    @data['chatrooms'] = chatrooms.reject{ |room| room.name.nil? }
+    @data['chatrooms'] = current_user.nil? ? [] : chatrooms.reject{ |room| room.name.nil? }
     @data['allChatrooms'] = Chatroom.all.reject{ |room| room.name.nil? || room.users.include?(current_user) }
     @data['currentUser'] = current_user
     @data['users'] = User.all.reject{ |user| user == current_user }
@@ -44,12 +44,9 @@ class ChatroomsController < ApplicationController
     @chatroom = Chatroom.new
   end
 
-  # GET /chatrooms/1/edit
   def edit
   end
 
-  # POST /chatrooms
-  # POST /chatrooms.json
   def create
     if Chatroom.find_by(name: chatroom_params)
       return render json: { status: 'fail', message: 'data exists' }, status: 442
@@ -62,7 +59,6 @@ class ChatroomsController < ApplicationController
   end
 
   def join
-    # binding.pry
     chatroom = Chatroom.find_by(name: chatroom_params)
     return render json: { status: 'fail', message: 'data does not exist' }, status: 404 unless chatroom
     user = User.find(user_params[:id])

@@ -21,6 +21,7 @@ class Message extends React.Component {
     this.renderMessage = this.renderMessage.bind(this);
     this.renderSender = this.renderSender.bind(this);
     this.renderReciever = this.renderReciever.bind(this);
+    this.renderMessagerWithTime = this.renderMessagerWithTime.bind(this);
   }
 
   renderMessage() {
@@ -31,16 +32,22 @@ class Message extends React.Component {
     }
   }
 
+  renderMessagerWithTime() {
+    const datetime = new Date(this.props.message.message.created_at).toLocaleString();
+    const messager = this.props.message.user.name;
+    return `${messager} sent at ${datetime}`;
+  }
+
   renderSender() {
     return (
       <ListItem>
         <ListItemText
           className='message-sender'
           primary={this.props.message.message.content}
-          secondary={this.props.message.message.created_at}
+          secondary={this.renderMessagerWithTime()}
         />
         <ListItemAvatar>
-          <Avatar>{this.props.message.user.name}</Avatar>
+          <Avatar>{this.props.message.user.name.charAt(0)}</Avatar>
         </ListItemAvatar>
       </ListItem>
     );
@@ -50,11 +57,11 @@ class Message extends React.Component {
     return (
       <ListItem>
         <ListItemAvatar>
-          <Avatar>{this.props.message.user.name}</Avatar>
+          <Avatar>{this.props.message.user.name.charAt(0)}</Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={this.props.message.message.content}
-          secondary={this.props.message.message.created_at}
+          secondary={this.renderMessagerWithTime()}
         />
       </ListItem>
     );
